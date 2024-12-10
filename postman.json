@@ -1,0 +1,176 @@
+{
+    "info": {
+        "name": "Musical Catalog API - Auth",
+        "description": "Authentication endpoints for Musical Catalog API",
+        "_postman_id": "musical-catalog-auth",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/register",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "auth", "register"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"login\": \"user@example.com\",\n    \"password\": \"password123\"\n}"
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"login\": \"user@example.com\",\n    \"password\": \"password123\"\n}"
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "body": {
+                                "token": "eyJhbGciOiJIUzI1NiJ9...",
+                                "message": "User registered successfully"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    if (jsonData.token) {",
+                                    "        pm.environment.set(\"jwt_token\", jsonData.token);",
+                                    "    }",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/login",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "auth", "login"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"login\": \"user@example.com\",\n    \"password\": \"password123\"\n}"
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"login\": \"user@example.com\",\n    \"password\": \"password123\"\n}"
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "body": {
+                                "token": "eyJhbGciOiJIUzI1NiJ9...",
+                                "message": "Authentication successful"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Admin",
+            "item": [
+                {
+                    "name": "Get All Users",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/admin/users",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "admin", "users"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update User Roles",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/admin/users/{userId}/roles",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "admin", "users", "{userId}", "roles"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[\"ROLE_ADMIN\", \"ROLE_USER\"]"
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8080",
+            "type": "string"
+        }
+    ]
+}
