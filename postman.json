@@ -149,7 +149,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/user/albums/search/artiste?artiste=example&page=0&size=10&sort=artiste,asc",
+                            "raw": "{{base_url}}/api/user/albums/search/artiste?artiste=example&page=0&size=10&sort=titre,asc",
                             "host": ["{{base_url}}"],
                             "path": ["api", "user", "albums", "search", "artiste"],
                             "query": [
@@ -167,7 +167,7 @@
                                 },
                                 {
                                     "key": "sort",
-                                    "value": "artiste,asc"
+                                    "value": "titre,asc"
                                 }
                             ]
                         }
@@ -277,6 +277,237 @@
                             "raw": "{{base_url}}/api/admin/albums/{id}",
                             "host": ["{{base_url}}"],
                             "path": ["api", "admin", "albums", "{id}"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "User Songs",
+            "item": [
+                {
+                    "name": "Get All Songs",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/user/songs?page=0&size=10&sort=titre,asc",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "user", "songs"],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "size",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "titre,asc"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Search Songs by Title",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/user/songs/search?titre=example&page=0&size=10&sort=titre,asc",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "user", "songs", "search"],
+                            "query": [
+                                {
+                                    "key": "titre",
+                                    "value": "example"
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "size",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "titre,asc"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Songs by Album",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/user/songs/album/{albumId}?page=0&size=10&sort=trackNumber,asc",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "user", "songs", "album", "{albumId}"],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "size",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "trackNumber,asc"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin Songs",
+            "item": [
+                {
+                    "name": "Create Song",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/admin/songs",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "admin", "songs"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"titre\": \"Example Song\",\n    \"duree\": 180,\n    \"trackNumber\": 1,\n    \"albumId\": \"album-id-here\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Update Song",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/admin/songs/{id}",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "admin", "songs", "{id}"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"titre\": \"Updated Song\",\n    \"duree\": 200,\n    \"trackNumber\": 2,\n    \"albumId\": \"album-id-here\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Song",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/admin/songs/{id}",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "admin", "songs", "{id}"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin Users",
+            "item": [
+                {
+                    "name": "Get All Users",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/admin/users?page=0&size=10",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "admin", "users"],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "size",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update User Roles",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/admin/users/{id}/roles",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "admin", "users", "{id}", "roles"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[\"ROLE_ADMIN\", \"ROLE_USER\"]"
                         }
                     }
                 }
