@@ -1,6 +1,5 @@
 package com.youcode.musicalcatalogapi.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -14,6 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.youcode.musicalcatalogapi.security.JwtAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -49,6 +50,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChainDev(HttpSecurity http) throws Exception {
         return http
             .csrf(AbstractHttpConfigurer::disable)
+            .headers(headers -> headers
+                .frameOptions(frame -> frame.disable()))
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
             )
