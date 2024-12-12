@@ -22,6 +22,15 @@ public class SongService {
         return songRepository.findAll(pageable);
     }
 
+    public Page<Song> searchByTitle(String titre, Pageable pageable) {
+        return songRepository.findByTitreContainingIgnoreCase(titre, pageable);
+    }
+
+    public Page<Song> getSongsByAlbum(String albumId, Pageable pageable) {
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new RuntimeException("Album not found"));
+        return songRepository.findByAlbum(album, pageable);
+    }
 
     public Song createSong(SongRequest request) {
         Album album = albumRepository.findById(request.getAlbumId())
