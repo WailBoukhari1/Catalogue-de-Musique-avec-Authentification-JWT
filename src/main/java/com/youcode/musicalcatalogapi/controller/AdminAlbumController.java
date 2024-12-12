@@ -2,6 +2,7 @@ package com.youcode.musicalcatalogapi.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,5 +40,10 @@ public class AdminAlbumController {
     public ResponseEntity<Void> deleteAlbum(@PathVariable String id) {
         albumService.deleteAlbum(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Album> getAlbumById(@PathVariable String id) {
+        return ResponseEntity.ok(albumService.getAlbumById(id));
     }
 } 
