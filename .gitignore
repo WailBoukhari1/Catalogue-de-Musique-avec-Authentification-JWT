@@ -32,9 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
-### Docker ###
-.env
-docker-compose.override.yml
-
 ### Jenkins ###
 jenkins_home/

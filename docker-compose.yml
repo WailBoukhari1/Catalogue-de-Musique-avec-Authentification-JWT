@@ -1,35 +1,61 @@
-version: '3'
-
 services:
-  app:
-    build: .
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
-    depends_on:
-      - mongodb
-      - sonarqube
-
   mongodb:
-    image: mongo:latest
+    image: tsukiiya101/mongodb:latest
+    container_name: mongodb
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   sonarqube:
-    image: sonarqube:latest
+    image: tsukiiya101/sonarqube:latest
+    container_name: sonarqube
     ports:
       - "9000:9000"
-    environment:
-      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
     volumes:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_logs:/opt/sonarqube/logs
     networks:
       - app-network
+    environment:
+      - SONAR_JDBC_URL=jdbc:h2:mem:sonarqube
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  app:
+    image: tsukiiya101/musical-catalog-api:latest
+    container_name: musical-catalog-api
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}
+      - SPRING_DATA_MONGODB_URI=mongodb://${MONGODB_HOST:-mongodb}:${MONGODB_PORT:-27017}/musical-catalog-prod
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      - JWT_EXPIRATION=${JWT_EXPIRATION:-86400000}
+      - SONAR_HOST_URL=http://sonarqube:9000
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      sonarqube:
+        condition: service_healthy
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   app-network:
